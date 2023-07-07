@@ -1,0 +1,23 @@
+{
+  "pluginContainerName" : "LandSAR Motion Model Example Plugins",
+  "description" : "A collection of plugins to support Search and Rescue / Personnel Recovery.",
+  "plugins" : [ {
+    "className" : "com.bbn.landsar.motionmodel.example.ExampleMotionModelPluginWithSearchEval",
+    "author" : "N/A",
+    "description" : "N/A",
+    "version" : "1.0.0",
+    "dependencies" : [ ]
+  }, {
+    "className" : "com.bbn.landsar.motionmodel.example.ExampleMotionModelPlugin",
+    "author" : "N/A",
+    "description" : "N/A",
+    "version" : "1.0.0",
+    "dependencies" : [ ]
+  }, {
+    "className" : "com.bbn.landsar.motionmodel.example.ExampleGoalPointMotionModelPlugin",
+    "author" : "N/A",
+    "description" : "N/A",
+    "version" : "1.0.0",
+    "dependencies" : [ ]
+  } ]
+}
