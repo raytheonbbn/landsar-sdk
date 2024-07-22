@@ -20,6 +20,7 @@ https://github.com/atapas/add-copyright.git
 package com.bbn.landsar.motionmodel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +59,7 @@ public interface MotionModelManager {
 	 * @return
 	 * @see com.bbn.landsar.motionmodel.ProbabilityDistribution
 	 */
-	public default ProbabilityDistribution createProbabilityDistribution(UUID lpiId, long time, BoundingBox bbox, List<LatLonGeo> pts) {
+	default ProbabilityDistribution createProbabilityDistribution(UUID lpiId, long time, BoundingBox bbox, List<LatLonGeo> pts) {
 		ProbabilityDistribution distribution = new ProbabilityDistribution(lpiId, time, createArrayFromPointsList(bbox, pts), bbox);
 		return distribution;
 	}
@@ -72,7 +73,7 @@ public interface MotionModelManager {
 	 * @return
 	 * @see com.bbn.landsar.motionmodel.ProbabilityDistribution
 	 */
-	public default ProbabilityDistribution createProbabilityDistribution(UUID lpiId, long time, BoundingBox bbox, List<LatLonGeo> pts, List<Double> pointWeights) {
+	default ProbabilityDistribution createProbabilityDistribution(UUID lpiId, long time, BoundingBox bbox, List<LatLonGeo> pts, List<Double> pointWeights) {
 		if (pts == null || pointWeights == null || pts.size() != pointWeights.size()) {
 			throw new IllegalArgumentException("pts and pointWeights must be the same size!");
 		}
@@ -87,7 +88,7 @@ public interface MotionModelManager {
 	 * @return
 	 * @see #createProbabilityDistribution
 	 */
-	public default double[][] createArrayFromPointsList(BoundingBox bbox, List<LatLonGeo> pts) {
+	default double[][] createArrayFromPointsList(BoundingBox bbox, List<LatLonGeo> pts) {
 		final Double oneOfSize = 1.0/pts.size();
 		List<Double> ptProbs = Collections.nCopies(pts.size(), oneOfSize);
 		return createArrayFromWeightedPointsList(bbox, pts, ptProbs);
@@ -100,25 +101,58 @@ public interface MotionModelManager {
 	 * @return
 	 * @see #createProbabilityDistribution
 	 */
-	public double[][] createArrayFromWeightedPointsList(BoundingBox bbox, List<LatLonGeo> pts, List<Double> pointWeights);
-	
-	/**
-	 * Motion model plugins may call this to save their internal state across deployment shutdowns/restarts/upgrades
-	 * 
-	 * @param lostPersonId
-	 * @param pluginName - name provided by Motion Model Creator 
-	 * @param tag - plugin specified data descriptor (used to differentiate between multiple stored objects for the same LPI)
-	 * @throws IOException
-	 */
-	public File getOrCreateFileForModelData(UUID lostPersonId, String pluginName, String tag) throws IOException;
+	double[][] createArrayFromWeightedPointsList(BoundingBox bbox, List<LatLonGeo> pts, List<Double> pointWeights);
 	
 	 /**
      * Gets the set of pluggable motion model names
      *
      * @return Set of motion model names
      */
-    public Set<String> getPluggableMotionModelNames();
+    Set<String> getPluggableMotionModelNames();
 
-    public MotionModelPlugin getMotionModelPlugin(String name);
+    MotionModelPlugin getMotionModelPlugin(String name);
 
+
+	/**
+	 * Motion model plugins may call this to save their internal state across deployment shutdowns/restarts/upgrades
+	 *
+	 * <p>For Android deployments, this will be written out to the SD Card</p>
+	 *
+	 * @param lostPersonId - lost person UUID
+	 * @param pluginName - name provided by Motion Model Creator
+	 * @param tag - plugin specified data descriptor (used to differentiate between multiple stored objects for the same LPI)
+	 *
+	 * @throws IOException - if file could not be read or written to
+	 */
+	File getOrCreateFileForModelData(UUID lostPersonId, String pluginName, String tag) throws IOException;
+
+	/**
+	 * <pre>
+	 * Loads file from relative path. This works in both Java/AWT and Android.
+	 *
+	 * For Java/AWT - this will load a file with the relative path of [name of plugin]/[relative/path]
+	 * For Android - this will instantiate a file with relative path from SD Card (e.g. My/Relative/Path -> /path/to/sdcard/atak/osppre/[name of plugin]/[relative/path])
+	 * </pre>
+	 *
+	 * @param relativePath - Relative Path for File to load
+	 * @return File
+	 *
+	 * @throws FileNotFoundException, IOException - if file could not be loaded
+	 */
+	byte[] loadFileFromRelativePath(String motionModelPluginName, String relativePath) throws FileNotFoundException, IOException;
+
+	/**
+	 * <pre>
+	 * Writes file to relative path. This works in both Java/AWT and Android.
+	 *
+	 * For Java/AWT - this will simply write a file to the relative path of [name of plugin]/[relative/path]
+	 * For Android - this will write a File with relative path to SD Card (e.g. relative/path -> /path/to/sdcard/atak/osppre/[name of plugin]/[relative/path])
+	 * </pre>
+	 *
+	 * @param contents - contents File to write
+	 * @param relativePath - relativePath to write the File to
+	 *
+	 * @throws FileNotFoundException, IOException - if file could not be written to
+	 */
+	void writeFileToRelativePath(String motionModelPluginName, byte[] contents, String relativePath) throws FileNotFoundException, IOException;
 }

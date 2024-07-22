@@ -19,11 +19,11 @@ https://github.com/atapas/add-copyright.git
 
 package com.bbn.landsar.geospatial;
 
+import com.bbn.landsar.utils.GeometryUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.metsci.glimpse.util.geo.LatLonGeo;
 import com.metsci.glimpse.util.geo.projection.TangentPlane;
 
-import java.awt.geom.GeneralPath;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,18 +92,7 @@ public class PolygonalExclusionZone implements GeographicDrawable, Serializable 
         if (pt.getLonDeg() > eastLonDeg) return false;
         if (pt.getLonDeg() < westLonDeg) return false;
 
-        GeneralPath polygon = new GeneralPath();
-
-        LatLonGeo vertex = vertices.get(0);
-        polygon.moveTo(vertex.getLatDeg(), vertex.getLonDeg());
-
-        for (int vIndx = 1; vIndx < vertices.size(); vIndx++) {
-            vertex = vertices.get(vIndx);
-            polygon.lineTo(vertex.getLatDeg(), vertex.getLonDeg());
-        }
-        polygon.closePath();
-
-        return (polygon.contains(pt.getLatDeg(), pt.getLonDeg()));
+        return GeometryUtils.polygonContainsPoint(pt, vertices);
     }
 
     public List<LatLonGeo> getVertices() {

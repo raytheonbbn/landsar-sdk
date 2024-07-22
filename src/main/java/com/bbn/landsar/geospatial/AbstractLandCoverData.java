@@ -304,11 +304,13 @@ public abstract class AbstractLandCoverData implements Serializable {
     public static final String NLCDB = "National Land Cover Data Base";
     public static final String VISNAV = "VISNAV";
     public static final String TRIVIAL = "Trivial";
+    public static final String WORLDCOVER = "Worldcover"; // https://esa-worldcover.org/en
 	public static String[] getLandCoverFormats() {
-		String[] options = new String[3];
+		String[] options = new String[4];
 		options[0] = NLCDB;
 		options[1] = VISNAV;
 		options[2] = TRIVIAL;
+		options[3] = WORLDCOVER;
 		return options;
 	}
 }

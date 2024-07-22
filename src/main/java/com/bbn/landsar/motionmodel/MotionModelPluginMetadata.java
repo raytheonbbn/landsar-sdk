@@ -21,6 +21,7 @@ package com.bbn.landsar.motionmodel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -66,7 +67,7 @@ public class MotionModelPluginMetadata implements Serializable {
             this.motionModelParameters = motionModelParameters.stream().sorted(comparator).collect(Collectors.toCollection(
                     ArrayList::new));
         }else{
-            this.motionModelParameters = null;
+            this.motionModelParameters = Collections.emptyList();
         }
         this.motionModelGeospatialDescriptions = motionModelGeospatialDescriptions;
         this.stayOutOfWaterEnabled = stayOutOfWaterEnabled;

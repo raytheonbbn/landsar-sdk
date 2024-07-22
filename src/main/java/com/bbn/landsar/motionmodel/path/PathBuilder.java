@@ -31,8 +31,10 @@ import com.metsci.glimpse.util.geo.LatLonGeo;
 public class PathBuilder {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PathBuilder.class);
 			
-	List<LatLonGeo> anchorPoints= new ArrayList<>();
-	double lengthInMeters = Double.NaN;
+	protected List<LatLonGeo> anchorPoints= new ArrayList<>();
+	protected double lengthInMeters = Double.NaN;
+
+	private boolean done = false;
 	
 
     public PathBuilder(LatLonGeo[] points) {
@@ -72,6 +74,13 @@ public class PathBuilder {
     	
     }
 
+    public void setDone(boolean done) {
+    	this.done=done;
+    }
+    public boolean isDone() {
+    	return done;
+    }
+    
     public Path build() {
         return new Path(anchorPoints);
     }

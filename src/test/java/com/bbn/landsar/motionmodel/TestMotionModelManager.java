@@ -20,6 +20,7 @@ https://github.com/atapas/add-copyright.git
 package com.bbn.landsar.motionmodel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -65,6 +66,20 @@ public class TestMotionModelManager implements MotionModelManager {
 	public MotionModelPlugin getMotionModelPlugin(String name) {
 		//not implemented
 		return null;
+	}
+
+	@Override
+	public byte[] loadFileFromRelativePath(String motionModelPluginName, String relativePath)
+			throws FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void writeFileToRelativePath(String motionModelPluginName, byte[] contents, String relativePath)
+			throws FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -124,4 +124,11 @@ public class AbstractTimeBasedVectorDataTest {
     	assertTrue(Velocity2d.UNKNOWN_VALUE.equals(Velocity2d.UNKNOWN_VALUE));
     	assertTrue(Velocity2d.UNKNOWN_VALUE.equals(new Velocity2d(Double.NaN, Double.NaN)));
     }
+    
+    @Test
+    public void testLoadLandcovermetadata() {
+    	LandCoverMetaData metadata = LandCoverMetaData.loadLandcoverMetaData("src/main/resources/Worldcover_default_landcover_SAR.txt", AbstractLandCoverData.WORLDCOVER);
+    	int size = metadata.getSize();
+    	
+    }
 }

@@ -154,7 +154,26 @@ public class BoundingBox implements GeographicDrawable, Serializable {
 		return drawables;
 	} 
 	
-
+	public boolean expandToInclude(BoundingBox other) {
+		boolean anyChange = false;
+		if (other.northLatDeg > this.northLatDeg) {
+			this.northLatDeg = other.northLatDeg;
+			anyChange = true;
+		}
+		if (other.southLatDeg < this.southLatDeg) {
+			this.southLatDeg = other.southLatDeg;
+			anyChange = true;
+		}
+		if (other.westLonDeg > this.westLonDeg) {
+			this.westLonDeg = other.westLonDeg;
+			anyChange = true;
+		}
+		if (other.eastLonDeg < this.eastLonDeg) {
+			this.eastLonDeg = other.eastLonDeg;
+			anyChange = true;
+		}
+		return anyChange;		
+	}
 
 	
 	public double calcApproximateAreaMetersSq() {
@@ -169,6 +188,13 @@ public class BoundingBox implements GeographicDrawable, Serializable {
 	
 	public String toString() {
 		return southLatDeg + "," + northLatDeg + "," + westLonDeg + "," + eastLonDeg;
+	}
+	
+
+	public String createFileFriendlyString() {
+
+		return "S" + String.format("%.3f", southLatDeg).replace('.', '_') + "_N" + String.format("%.3f", northLatDeg).replace('.', '_') 
+				+ "_W" + String.format("%.3f", westLonDeg).replace('.', '_') + "_E" + String.format("%.3f", eastLonDeg).replace('.', '_');
 	}
 
 
