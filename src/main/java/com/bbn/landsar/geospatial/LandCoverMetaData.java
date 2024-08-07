@@ -282,7 +282,7 @@ public class LandCoverMetaData implements Serializable {
      * @return
      */
     public static LandCoverMetaData reloadDefaultLandcoverMetadataFromDisk() {
-    	String filename = "NLCDB_default_landcover_SAR.txt";
+    	String filename = "NLCDB_default_landcover_empty.txt";
     	LandCoverMetaData metaData;
 		try {
 //		lcCode, String shortDescription, soaFactor, cost, terrainResourceParameter, red, green, blue, detailedDescription
