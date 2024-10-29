@@ -134,6 +134,7 @@ public interface MotionModelManager {
 	 * For Android - this will instantiate a file with relative path from SD Card (e.g. My/Relative/Path -> /path/to/sdcard/atak/osppre/[name of plugin]/[relative/path])
 	 * </pre>
 	 *
+	 * @param motionModelPluginName - name of this motion model plugin
 	 * @param relativePath - Relative Path for File to load
 	 * @return File
 	 *
@@ -155,4 +156,6 @@ public interface MotionModelManager {
 	 * @throws FileNotFoundException, IOException - if file could not be written to
 	 */
 	void writeFileToRelativePath(String motionModelPluginName, byte[] contents, String relativePath) throws FileNotFoundException, IOException;
+
+	void appendToFile(String motionModelPluginName, String contents, String relativePath) throws FileNotFoundException, IOException;
 }

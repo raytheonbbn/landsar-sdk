@@ -333,9 +333,17 @@ In addition to estimating the location of a lost person based on the initial inp
 </p>
 
 # Version
-Document version: June 2023
+Document version: October 2024
 
 ## Change Notes
+
+### Version 0.0.7-SNAPSHOT (October 2024)
+- add support for worldcover landcover data (see https://esa-worldcover.org/en)
+- add support for 3DEP elevation data (only available for United States)
+  - About: https://www.usgs.gov/3d-elevation-program
+  - API: https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer
+- allow Motion Model Plugins to use their own Geospatial Data. 
+  - This (optionally) removes the requirement for LandSAR to provide Geospatial (Landcover and Elevation data) to Motion Model Plugins. 
 
 ### Version 0.0.6 (June 2023)
 - Update ExamplePlugin use a string (N, S, E, W) for direction instead of a number for rotation
@@ -361,7 +369,7 @@ See the [open issues](https://github.com/github_username/repo_name/issues) for a
 
 ## License
 LandSAR Motion Model Software Development Kit
-Copyright (c) 2023 Raytheon Technologies 
+Copyright (c) 2024 RTX BBN Technologies 
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

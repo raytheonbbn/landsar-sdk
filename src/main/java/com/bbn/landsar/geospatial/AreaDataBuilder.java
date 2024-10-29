@@ -19,6 +19,8 @@ package com.bbn.landsar.geospatial;
 
 import com.bbn.landsar.motionmodel.AreaDataType;
 
+import java.util.Set;
+
 public interface AreaDataBuilder {
 	
 	public AreaDataBuilder set(AreaDataType type, Object AreadataObject);
@@ -29,7 +31,15 @@ public interface AreaDataBuilder {
 	
 	// Some area data has names
 	public AreaDataBuilder setAreaDataName(String name);
-	
+
+	public AreaDataBuilder setRequiredAreaDataTypes(Set<AreaDataType> areaDataTypes);
+
+	public AreaDataBuilder setRequiredAreaDataType(AreaDataType areaDataType, boolean overwriteExistingRequirement);
+
+	public AreaDataBuilder setRequiredAreaDataType(AreaDataType areaDataType);
+
+	public Set<AreaDataType> getRequiredAreaDataTypes();
+
 	public AreaData build();
 
 }

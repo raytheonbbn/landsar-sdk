@@ -77,7 +77,8 @@ public class ExampleMotionModelPlugin implements LandMotionModelPlugin {
     private MotionModelManager motionModelManager;
     
     private String name = ""; // name will be set by Motion Model Manager via setter
-    
+
+	private boolean requireElevationData = false;
     /**
      * Motion Model Manager has per-LPI locking, but my Motion Model Plugin may be called to create / update two different LPIs at once
      */
@@ -134,8 +135,21 @@ public class ExampleMotionModelPlugin implements LandMotionModelPlugin {
 	@Override
 	public void configure(Map<String, Object> configurationOptions, PluginContext context)
 			throws InsufficientConfigurationException {
-		// TODO Auto-generated method stub
 
+
+	}
+
+	@Override
+	public Set<AreaDataType> getRequiredAreaData() {
+		Set<AreaDataType> desiredAndRequiredAreaData = new HashSet<>();
+		// Landcover is desired, but not required, so it gets added to the set with required=false
+		desiredAndRequiredAreaData.add(new AreaDataType(AreaDataType.LANDCOVER, false));
+
+		// If required, LandSAR will throw an error if it is unable to provide this Motion Model Plugin with Elevation Data
+		// If not required, but present in the returned set, LandSAR will attempt to provide Elevation Data to the plugin as part of the AreaData
+		// If AreaDataType.ELEVATION is not included in the returned set, LandSAR will not even attempt to download Elevation data when this plugin is selected
+		desiredAndRequiredAreaData.add(new AreaDataType(AreaDataType.ELEVATION, this.requireElevationData));
+		return desiredAndRequiredAreaData;
 	}
 
 	@Override

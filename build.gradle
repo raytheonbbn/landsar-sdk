@@ -33,7 +33,6 @@ repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
     mavenLocal()
-    jcenter()
     mavenCentral()
     flatDir {
   		dirs 'local_lib'
@@ -42,7 +41,7 @@ repositories {
 
 dependencies {
     // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api 'com.bbn.roger:roger-plugin-interfaces:1.3.3-SNAPSHOT'
+    api 'com.bbn.roger:roger-plugin-interfaces:1.3.0'
     api 'com.fasterxml.jackson.core:jackson-databind:2.8.0'
 
     api 'org.slf4j:slf4j-api:1.7.13'

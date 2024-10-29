@@ -82,4 +82,11 @@ public class TestMotionModelManager implements MotionModelManager {
 		
 	}
 
+	@Override
+	public void appendToFile(String motionModelPluginName, String contents, String relativePath)
+			throws FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

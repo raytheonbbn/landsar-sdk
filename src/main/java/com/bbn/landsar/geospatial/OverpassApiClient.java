@@ -43,10 +43,10 @@ public class OverpassApiClient {
      * Example input query:
      * 
      * <pre>
-     *  "waterway=river"
+     *  "waterway=river”
      *  [out:json][timeout:25];
      *  (
-     *    // query part for: “waterway=river"
+     *    // query part for: “waterway=river”
      *    node["waterway"="river"]({{bbox}});
      *    way["waterway"="river"]({{bbox}});
      *    relation["waterway"="river"]({{bbox}});
