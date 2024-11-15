@@ -337,6 +337,9 @@ Document version: October 2024
 
 ## Change Notes
 
+### Version 0.0.7-SNAPSHOT (November 2024)
+- add support for loading (preprocessed) trails data
+
 ### Version 0.0.7-SNAPSHOT (October 2024)
 - add support for worldcover landcover data (see https://esa-worldcover.org/en)
 - add support for 3DEP elevation data (only available for United States)

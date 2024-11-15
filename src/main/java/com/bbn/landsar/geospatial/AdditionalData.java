@@ -19,6 +19,8 @@ https://github.com/atapas/add-copyright.git
 
 package com.bbn.landsar.geospatial;
 
+import com.bbn.landsar.motionmodel.AreaDataType;
+
 import java.io.File;
 import java.util.Collection;
 
@@ -27,13 +29,20 @@ import java.util.Collection;
  * Currently assumed to be related to the bounding box and dataDownloaders, but could be extended.
  * 
  */
-public abstract class AdditionalData {
-	
+public interface AdditionalData {
+	/**
+	 * Returns the area data type, see {@link com.bbn.landsar.motionmodel.AreaDataType} for
+	 * core types known by LandSAR, but custom types can be returned here as a new String
+	 * @return Area Data Type
+	 */
+	String getAreaDataType();
 	
 	/**
 	 * re-loading Lost Person Instances using additional area data types is not supported yet
 	 * @param outputDir - directory in which to create a copy of the data on disk
 	 * @return - collection of files written to by this method. All should be children of the given outputDir
 	 */
-	public abstract Collection<File> writeFiles(File outputDir);
+	Collection<File> writeFiles(File outputDir);
+
+	Object getValueLatLon(double latDeg, double lonDeg);
 }

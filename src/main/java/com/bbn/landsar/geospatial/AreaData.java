@@ -29,6 +29,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -48,13 +49,7 @@ public interface AreaData extends Serializable {
 	public AbstractElevationData getElevationData();
 	
 	public AbstractLandCoverData getLandcoverData();
-	
-	/**
-	 * No current implementations
-	 * @return
-	 */
-	public AbstractRoadsAndTrails getRoadsAndTrails();
-	
+
 	/**
 	 * No current implementations
 	 * @return
@@ -68,11 +63,6 @@ public interface AreaData extends Serializable {
 	public String getAreaName();
 	
     public UUID getId();
-
-	RiverNetworkData getRiverWayData();
-	
-	public Map<String, List<AdditionalData>> getAdditionalDataByType();
-	
 	
 	public static BoundingBox readBoundsFile(File latLonFile) throws FileNotFoundException, IOException {
 		// Read the lat lon file and create the sector
@@ -109,4 +99,7 @@ public interface AreaData extends Serializable {
 	public static String getBoundsString(BoundingBox bbox) {
 		return bbox.getSouthLatDeg() + "," + bbox.getNorthLatDeg() + "," + bbox.getWestLonDeg() + "," + bbox.getEastLonDeg();
 	}
+
+	AdditionalData getAdditionalData(String dataType);
+	Map<String, AdditionalData> getAdditionalData();
 }

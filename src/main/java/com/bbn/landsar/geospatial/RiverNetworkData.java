@@ -26,9 +26,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import com.bbn.landsar.motionmodel.AreaDataType;
 import com.metsci.glimpse.util.geo.LatLonGeo;
 
-public class RiverNetworkData extends AdditionalData{
+public class RiverNetworkData implements AdditionalData{
     private Map<String, LinkedList<String>> wayIdToNodeIds;
     private Map<String, LatLonGeo> nodesToLatLon;
     private Map<String, Set<String>> nodeIdToWayIds;
@@ -64,9 +65,19 @@ public class RiverNetworkData extends AdditionalData{
         this.nodeIdToWayIds = nodeIdToWayIds;
     }
 
-	@Override
+    @Override
+    public String getAreaDataType() {
+        return AreaDataType.RIVERWAY;
+    }
+
+    @Override
 	public Collection<File> writeFiles(File outputDir) {
 		// TODO Auto-generated method stub
 		return Collections.emptyList();
 	}
+
+    @Override
+    public Object getValueLatLon(double latDeg, double lonDeg) {
+        return null;
+    }
 }

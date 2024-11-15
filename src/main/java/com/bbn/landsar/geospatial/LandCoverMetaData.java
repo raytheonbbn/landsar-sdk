@@ -287,7 +287,7 @@ public class LandCoverMetaData implements Serializable {
 		try {
 //		lcCode, String shortDescription, soaFactor, cost, terrainResourceParameter, red, green, blue, detailedDescription
 			metaData = loadLandcoverMetaData(filename);
-			metaData.setName("Default NLCDB - SAR");
+			metaData.setName("Default NLCDB - Empty");
 		} catch (IOException | NumberFormatException | NullPointerException e) {
 			LOGGER.error("Error loading NLCDB metadata...from file: {}. You may need to download this file, contact the developers of the SDK for it", filename, e);
 			return new LandCoverMetaData();

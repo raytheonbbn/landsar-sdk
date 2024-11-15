@@ -23,11 +23,12 @@ import java.util.Set;
 
 /**
  * The Data Downloader provides a Downloader for a specific data source.
+ *
+ * TODO: we should eventually break this down into DataDownloader and DataLoader, or something similar
+ * to support both internet and data cache modes in LandSAR
  */
 public interface DataDownloader {
-	
-	// Types of AreaData that this Downloader can get. When possible, please reuse constants from com.bbn.landsar.motionmodel.AreaDataType
-    Set<String> getAreaDataTypes();
-    
+	// Type of AreaData that this Downloader can download. When possible, please reuse constants from com.bbn.landsar.motionmodel.AreaDataType
+    String getAreaDataType();
     AdditionalData getData(BoundingBox bbox);
 }

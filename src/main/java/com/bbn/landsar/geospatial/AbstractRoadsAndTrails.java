@@ -19,23 +19,27 @@ https://github.com/atapas/add-copyright.git
 
 package com.bbn.landsar.geospatial;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
+
+import com.bbn.roger.plugin.StartablePlugin;
 import com.metsci.glimpse.util.geo.LatLonGeo;
 
-public abstract class AbstractRoadsAndTrails implements Serializable {
+public abstract class AbstractRoadsAndTrails implements Serializable, DataDownloader, StartablePlugin  {
 	
 	private static final String T = "\t";
 
-	public static final int ROAD = 1;
-	public static final int TRAIL = 2;
-	public static final int ROAD_OR_TRAIL = 3;
-	public static final int NOT_ROAD_OR_TRAIL = 0;
+	public static final String ROADS_TRAILS_DATA_DIR_PARAM = "roadsTrailsDataDir";
+	public static final String ROADS_TRAILS_LAT_LON_FILE_PARAM = "roadsTrailsLatLon";
+	public static final String ROADS_TRAILS_DATA_FILE_PARAM = "roadsTrailsData";
+	public static final String ROADS_TRAILS_METADATA_FILE_PARAM = "roadsAndTrailsMeta";
+
+	public static final String ROADS_TRAILS_DEFAULT_METADATA_FILE_NAME = "RoadsAndTrailsMetadata.txt";
+	public static final String ROADS_TRAILS_DEFAULT_LAT_LON_FILE_NAME = "RoadsAndTrailsLatLon.txt";
+	public static final String ROADS_TRAILS_DEFAULT_DATA_FILE_NAME = "RoadsAndTrails.txt";
+	public static final String ROADS_TRAILS_DEFAULT_IMAGE_FILE_NAME = "RoadsAndTrails.png";
 	
 	protected double minLat;
 	protected double maxLat;
@@ -55,8 +59,6 @@ public abstract class AbstractRoadsAndTrails implements Serializable {
 	protected int[][] roadsAndTrails;
 	
 	protected RoadsAndTrailsMetaData metaData;
-	
-	private transient BufferedImage roadsAndTrailsImage;
 
 	public double getMinLat() {
 		return minLat;
@@ -87,12 +89,12 @@ public abstract class AbstractRoadsAndTrails implements Serializable {
 	}
 	
 	public boolean isRoadOrTrail(LatLonGeo pos) {
-		return getRoadsAndTrailsForLatLon(pos) != NOT_ROAD_OR_TRAIL;
+		return getRoadsAndTrailsForLatLon(pos) != RoadsAndTrailsMetaData.NOT_ROAD_OR_TRAIL;
 	}
 
 	public abstract int getRoadsAndTrailsForLatLon(double latDeg, double lonDeg);
 	
-	public abstract void writeFiles(File outputDir);
+	public abstract Collection<File> writeFiles(File outputDir);
 	
 	public void spreadRoadsAndTrails(int factor) {
 		for (int i = 0; i < roadsAndTrails.length; i++ ) {
@@ -106,7 +108,7 @@ public abstract class AbstractRoadsAndTrails implements Serializable {
 									roadsAndTrails[i].length - 1);
 					for (int i0 = iMinus; i0 <= iPlus; i0++) {
 						for (int j0 = jMinus; j0 <= jPlus; j0++) {
-							roadsAndTrails[i0][j0] = ROAD_OR_TRAIL;
+							roadsAndTrails[i0][j0] = RoadsAndTrailsMetaData.ROAD_OR_TRAIL;
 						}
 					}
 				}
@@ -139,63 +141,6 @@ public abstract class AbstractRoadsAndTrails implements Serializable {
 		return latIndx * numLon + lonIndx;
 	}
 	
-	public BufferedImage getRoadsAndTrailsImage() {
-        return roadsAndTrailsImage;
-    }
-
-    public void setRoadsAndTrailsImage(BufferedImage roadsAndTrailsImage) {
-        this.roadsAndTrailsImage = roadsAndTrailsImage;
-    }
-
-    public static class RoadsAndTrailsMetaData {
-		String name;
-		
-		List<RoadsAndTrailsMetaDataItem> metaData;
-
-		public RoadsAndTrailsMetaData(String name) {
-			super();
-			this.name = name;
-			
-			metaData = new ArrayList<RoadsAndTrailsMetaDataItem>();
-		}
-		
-		public void addMetaDataItem(RoadsAndTrailsMetaDataItem item) {
-			metaData.add(item);
-		}
-		
-		public RoadsAndTrailsMetaDataItem getItem(int rtCode) {
-			for (RoadsAndTrailsMetaDataItem item : metaData) {
-				if (item.rtCode == rtCode) return item;
-			}
-			return null;
-		}
-		
-		public List<Integer> getRtCodes() {
-			List<Integer> rtCodes = new ArrayList<Integer>();
-			
-			for (RoadsAndTrailsMetaDataItem item : metaData) {
-				rtCodes.add(item.rtCode);
-			}
-			return rtCodes;
-		}
-		
-		public static RoadsAndTrailsMetaData getDefaultMetaData() {
-			RoadsAndTrailsMetaData metaData = 
-					new RoadsAndTrailsMetaData("Default");
-			
-			RoadsAndTrailsMetaDataItem item = 
-					new RoadsAndTrailsMetaDataItem(NOT_ROAD_OR_TRAIL, 
-//							new Color(0), "Not road or trail");
-        			new Color(255,255,255), "Not road or trail");
-			metaData.addMetaDataItem(item);
-			item = new RoadsAndTrailsMetaDataItem(ROAD_OR_TRAIL, 
-      			new Color(168,168,168), "Road or trail");
-			metaData.addMetaDataItem(item);
-			
-			return metaData;
-		}
-	}
-	
 	public static class RoadsAndTrailsMetaDataItem {
 			
 		public static final int ROAD = 1;
@@ -204,23 +149,24 @@ public abstract class AbstractRoadsAndTrails implements Serializable {
 		public static final int NOT_ROAD_OR_TRAIL = 0;
 		
 		int rtCode;
-		Color color;
+		int r, g, b;
 		String shortDescription;
-		
-		public RoadsAndTrailsMetaDataItem(int rtCode, Color color, String shortDescription) {
+
+		public RoadsAndTrailsMetaDataItem(int rtCode, int r, int g, int b, String shortDescription) {
 			super();
 			this.rtCode = rtCode;
-			this.color = color;
+			this.r = r;
+			this.g = g;
+			this.b = b;
 			this.shortDescription = shortDescription;
 		}
 		
 		public RoadsAndTrailsMetaDataItem(String line) {
 			String[] s = line.split(T);
 			rtCode = Integer.parseInt(s[0]);
-			int r = Integer.parseInt(s[1]);
-			int g = Integer.parseInt(s[2]);
-			int b = Integer.parseInt(s[3]);
-			color = new Color(r,g,b);
+			r = Integer.parseInt(s[1]);
+			g = Integer.parseInt(s[2]);
+			b = Integer.parseInt(s[3]);
 			shortDescription = s[4];
 		}
 		
@@ -229,8 +175,8 @@ public abstract class AbstractRoadsAndTrails implements Serializable {
 			return rtCode;
 		}
 
-		public Color getColor() {
-			return color;
+		public int[] getColor() {
+			return new int[]{r, g, b};
 		}
 
 		public String getShortDescription() {
@@ -251,9 +197,9 @@ public abstract class AbstractRoadsAndTrails implements Serializable {
 		
 		public String toString() {
 			return rtCode + T + 
-					color.getRed() + T +
-					color.getGreen() + T +
-					color.getBlue() + T +
+					r + T +
+					g + T +
+					b + T +
 					shortDescription;
 		}
 	}

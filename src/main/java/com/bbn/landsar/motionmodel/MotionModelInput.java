@@ -49,65 +49,65 @@ import com.metsci.glimpse.util.geo.LatLonGeo;
  * use setters and getters so that we can do transformations if necessary due to refactoring in the future
  */
 public class MotionModelInput {
-	public MotionModelInput(UUID lpiId, UserEnteredGeospatialData geospatialInputs, AreaData areaData,
-			Map<String, Object> motionModelParameters, MovementSchedule movementSchedule, long startTime, List<LatLonGeo> startTimeDistribution,
-			StatusUpdateMessage status) {
-		super();
-		this.lpiId = lpiId;
-		this.geospatialInputs = geospatialInputs;
-		this.areaData = areaData;
-		this.motionModelParameters = motionModelParameters;
-		this.movementSchedule = movementSchedule;
-		this.startTime = startTime;
-		this.startTimeDistribution = startTimeDistribution;
-		this.status = status;
-	}
-
 	/**
-	 * a unique identifier for this Lost Person Instance. This id is referenced when calling calculateProbabilityOfSuccess, updateProbabilityDistributionForSearch, cancelSearch, deleteModelState. 
+	 * a unique identifier for this Lost Person Instance. This id is referenced when calling calculateProbabilityOfSuccess, updateProbabilityDistributionForSearch, cancelSearch, deleteModelState.
 	 */
 	protected UUID lpiId;
 	/**
 	 * geospatial inputs entered by the user, including RendezvousPoints and ExclusionZones
 	 */
 	protected UserEnteredGeospatialData geospatialInputs;
-	
+
 	protected AreaData areaData;
 	/**
-	 * 
-	 * values of parameters for this LPI. Prior to calling the {@link MotionModelPlugin#generateInitialDistribution()} method, 
+	 *
+	 * values of parameters for this LPI. Prior to calling the {@link MotionModelPlugin#generateInitialDistribution()} method,
 	 * {@link #validateMotionModelParameters(Map, StatusUpdateMessage)} will be called with the parameters.
 	 */
 	protected Map<String, Object> motionModelParameters;
 	/**
-	 * The time (in Unix/Epoch Time) the person was last seen or estimated to be located at the startTimeDistribution. 
+	 * The time (in Unix/Epoch Time) the person was last seen or estimated to be located at the startTimeDistribution.
 	 * @see https://www.epochconverter.com/
 	 */
 	protected long startTime;
 	/**
-	 * 
-	 * The Last Known Point of the lost person. This may be a single point or a distribution based on user-entered data. 
+	 *
+	 * The Last Known Point of the lost person. This may be a single point or a distribution based on user-entered data.
 	 */
 	protected List<LatLonGeo> startTimeDistribution;
 	/**
-	 *  The Status Update Message can be used to send information back to the LandSAR user about the progress of modeling and computation, since 
-	 *  //TODO not this method this method may be compute/time intensive. 
+	 *  The Status Update Message can be used to send information back to the LandSAR user about the progress of modeling and computation, since
+	 *  //TODO not this method this method may be compute/time intensive.
 	 */
 	protected StatusUpdateMessage status;
-	
+
 	/**
-	 * The Movement Schedule represents when the lost person is expected to be moving. Most current movement schedules are the same for any 24-hour period, but this interface allows the Movement Schedules and types of Movement Schedules to be extended. 
-	 * 
+	 * The Movement Schedule represents when the lost person is expected to be moving. Most current movement schedules are the same for any 24-hour period, but this interface allows the Movement Schedules and types of Movement Schedules to be extended.
+	 *
 	 */
 	protected MovementSchedule movementSchedule;
 
 	public MotionModelInput(UUID lpiId, UserEnteredGeospatialData geospatialInputs, AreaData areaData,
-			Map<String, Object> motionModelParameters, long startTime, List<LatLonGeo> startTimeDistribution,
-			StatusUpdateMessage status) {
+							Map<String, Object> motionModelParameters, long startTime, List<LatLonGeo> startTimeDistribution,
+							StatusUpdateMessage status) {
 		this.lpiId = lpiId;
 		this.geospatialInputs = geospatialInputs;
 		this.areaData = areaData;
 		this.motionModelParameters = motionModelParameters;
+		this.startTime = startTime;
+		this.startTimeDistribution = startTimeDistribution;
+		this.status = status;
+	}
+
+	public MotionModelInput(UUID lpiId, UserEnteredGeospatialData geospatialInputs, AreaData areaData,
+							Map<String, Object> motionModelParameters, MovementSchedule movementSchedule, long startTime, List<LatLonGeo> startTimeDistribution,
+							StatusUpdateMessage status) {
+		super();
+		this.lpiId = lpiId;
+		this.geospatialInputs = geospatialInputs;
+		this.areaData = areaData;
+		this.motionModelParameters = motionModelParameters;
+		this.movementSchedule = movementSchedule;
 		this.startTime = startTime;
 		this.startTimeDistribution = startTimeDistribution;
 		this.status = status;
